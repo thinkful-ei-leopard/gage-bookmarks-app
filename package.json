@@ -1,0 +1,12 @@
+{
+  "name": "gage-bookmarks-app",
+  "version": "1.0.0",
+  "description": "Gage Eide's Wondrous Bookmark Organizing Application",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
