@@ -1,10 +1,10 @@
 const BASE_URL = 'https://thinkful-list-api.herokuapp.com/gage';
 
-function getItems() {
-  return apiFetch(`${BASE_URL}/items`);
+const getItems = function() {
+  return apiFetch(`${BASE_URL}/bookmarks`);
 }
 
-function createItem(name, url, description, rating) {
+const createItem = function(name, url, description, rating) {
   let newItem = JSON.stringify({ name, url, description, rating});
   return apiFetch(`${BASE_URL}/items`, {
     method: 'POST',
@@ -15,7 +15,7 @@ function createItem(name, url, description, rating) {
   });
 }
 
-function updateItem(id, updateData) { //?? MAY NEED ADJUSTING
+const updateItem = function(id, updateData) { //?? MAY NEED ADJUSTING
   return apiFetch(`${BASE_URL}/items/${id}`, {
     method: 'PATCH',
     headers: {
@@ -25,13 +25,13 @@ function updateItem(id, updateData) { //?? MAY NEED ADJUSTING
   });
 }
 
-function deleteItem(id) {
+const deleteItem = function(id) {
   return apiFetch(`${BASE_URL}/items/${id}`, {
     method: 'DELETE'
   });
 }
 
-function apiFetch(...args) {
+const apiFetch = function(...args) {
   let error;
   return fetch(...args)
     .then(res => {

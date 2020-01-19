@@ -1,0 +1,187 @@
+* {
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 62.5%;
+    font-family: 'PT Sans', sans-serif;
+}
+
+body {
+    background-color: #2F4454;
+    color: rgb(225, 236, 207);
+    padding-right: 2rem;
+    padding-left: 2rem;
+}
+
+main {
+    text-align: center;
+}
+
+h1 {
+    margin: 3rem 0rem 1.5rem 0rem;
+    font-size: 4rem;
+}
+
+.button-box {
+    margin: auto;
+    margin-bottom: 1.5rem;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.button-box > * {
+    display: inline-block;
+    height: 4.5rem;
+    width: 10rem;
+    font-size: 2.2rem;
+    color: rgb(225, 236, 207);
+    background-color: #2E151B;
+    border: 1px solid #DA7B93;
+    border-radius: .5rem;
+    box-shadow: .2rem .2rem .5rem black;
+}
+
+.bookmark {
+    border: .1rem solid #1C3334;
+}
+
+.container {
+    padding: 0rem;
+    border: .2rem solid black;
+    border-radius: .5rem;
+    background-color: #376E6F;
+}
+
+.new-container {
+    border: .2rem solid black;
+    border-radius: .5rem;
+    background-color: #376E6F;
+    padding: 0rem 2.5rem 1.5rem 2.5rem;
+}
+
+.top-cap {
+    border-radius: .5rem .5rem 0rem 0rem;
+}
+
+.bottom-cap {
+    border-radius: 0rem 0rem .5rem .5rem;
+}
+
+.bottom-margin {
+    margin-bottom: 1.6rem;
+}
+
+.left {
+    text-align: left;
+}
+
+.title-bar {
+    font-size: 2rem;
+    padding: .9rem .5rem .9rem .5rem;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+.fa-trash-o {
+    font-size: 3rem;
+    margin-left: 1rem;
+    color: rgb(206, 5, 5);
+}
+
+h2 {
+    font-size: 3.5rem;
+}
+
+form > * {
+    display: block;
+    font-size: 2rem;
+}
+
+#new-submit {
+    margin: auto;
+    margin-top: 1.6rem;
+    width: 10rem;
+    height: 4rem;
+}
+
+.fa-star {
+    font-size: 1.6rem;
+}
+
+.checked {
+    color: goldenrod;
+  }
+
+.expanded {
+    position: relative;
+    padding: .5rem;
+    font-size: 2rem;
+    background-color: #1C3334;
+}
+
+.expanded > p {
+    margin-top: .5rem;
+    margin-bottom: 1rem;
+    color: rgb(225, 236, 207);
+}
+
+.expanded-buttons {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.expanded-buttons > * {
+    cursor: pointer;
+}
+
+.edit-item {
+    display: inline-block;
+    height: 3rem;
+}
+
+.visit-site-button > * {
+    display: inline-block;
+    height: 3.5rem;
+    width: 10rem;
+    font-size: 2rem;
+    cursor: pointer;
+}
+
+.error-box {
+  position: relative;
+  color: black;
+  background-color: red;
+  font-size: 1.5rem;
+  line-height: 1rem;
+  font-weight: bold;
+  width: 75%;
+  margin: auto;
+  margin-bottom: 1rem;
+  border: 1px solid black;
+  border-radius: .5rem;
+  box-shadow: .2rem .2rem .5rem black;
+
+}
+
+.error-box * {
+  display: inline-block;
+}
+
+#close-button {
+  position: absolute;
+  display: block;
+  font-size: 1rem;
+  padding: 0.1rem .1rem 0rem 0rem;
+  height: 1.5rem;
+  width: 1.5rem;
+  top: .2rem;
+  right: .2rem;
+}
+
+.hidden {
+    display: none;
+}
