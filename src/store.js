@@ -1,7 +1,8 @@
 const items = [];
 let error = null;
 let filter = null;
-let addingItem = false;
+let addingItem = false; //!! SHOULD BE FALSE BY DEFAULT
+let tempRating = 0;
 
 const findById = function (id) {
   return this.items.find(currentItem => currentItem.id === id);
@@ -28,6 +29,7 @@ export default {
   items,
   error,
   filter,
+  tempRating,
   addingItem,
   setError,
   findById,

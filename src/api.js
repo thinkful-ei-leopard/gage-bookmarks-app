@@ -4,9 +4,9 @@ const getItems = function() {
   return apiFetch(`${BASE_URL}/bookmarks`);
 }
 
-const createItem = function(name, url, description, rating) {
-  let newItem = JSON.stringify({ name, url, description, rating});
-  return apiFetch(`${BASE_URL}/items`, {
+const createItem = function(title, url, desc, rating) {
+  let newItem = JSON.stringify({ title, url, desc, rating});
+  return apiFetch(`${BASE_URL}/bookmarks`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -16,7 +16,7 @@ const createItem = function(name, url, description, rating) {
 }
 
 const updateItem = function(id, updateData) { //?? MAY NEED ADJUSTING
-  return apiFetch(`${BASE_URL}/items/${id}`, {
+  return apiFetch(`${BASE_URL}/bookmarks/${id}`, {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json'
@@ -26,7 +26,7 @@ const updateItem = function(id, updateData) { //?? MAY NEED ADJUSTING
 }
 
 const deleteItem = function(id) {
-  return apiFetch(`${BASE_URL}/items/${id}`, {
+  return apiFetch(`${BASE_URL}/bookmarks/${id}`, {
     method: 'DELETE'
   });
 }

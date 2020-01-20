@@ -143,6 +143,10 @@ form > * {
     height: 3rem;
 }
 
+.adding-rating > * {
+    cursor: pointer;
+}
+
 .visit-site-button > * {
     display: inline-block;
     height: 3.5rem;
