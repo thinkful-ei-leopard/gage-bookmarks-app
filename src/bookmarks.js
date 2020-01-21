@@ -2,6 +2,9 @@ import $ from 'jquery';
 import api from './api';
 import store from './store';
 
+/**
+ * *HTML TEMPLATES
+ */
 const generateBookmarksItemsString = function(items) {
   const completedItem = items.map((item) => generateItemElement(item));
   return completedItem.join('');
@@ -12,7 +15,7 @@ const generateItemElement = function (item) {
   return `
     <div class='bookmark' data-item-id='${item.id}'>
         <div class='title-bar'>
-            <span>${item.title}</span>
+            <span class='item-title overflow'>${item.title}</span>
             <div>` 
             + generateStarRating(rating) + 
             `</div>
@@ -23,7 +26,7 @@ const generateItemElement = function (item) {
             </p>
             <div class='expanded-buttons'>
               <button type='button' class='edit-item'>Edit</button>
-              <a href="${item.url}" class="visit-site-button" target="blank"><button>Visit Site</button></a>
+              <a href="${item.url}" class="visit-site-button action" role='button' target="blank">Visit Site</a>
               <i class="fa fa-trash-o"></i>
             </div>
         </div>
@@ -77,6 +80,24 @@ const generateStarRating = function(rating) {
   }
 };
 
+const generateBadFilter = function() {
+  return `
+    <div class='bookmark'>
+        <div class='title-bar_no-list'>
+            <span>You have no bookmarks to show in this current filter. Please select an alternate one.</span>
+        </div>
+    </div>`;
+};
+
+const generateEmptyList = function() {
+  return `
+    <div class='bookmark'>
+        <div class='title-bar_no-list'>
+            <span>You have no bookmarks! Add a new one using the button above.</span>
+        </div>
+    </div>`;
+};
+
 const generateAddingPage = function() {
   return `  
     <h2>Add Bookmark</h2>
@@ -91,10 +112,48 @@ const generateAddingPage = function() {
         <div class='adding-rating'>
         ` + generateStarRating(store.tempRating) + `
         </div>
-        <button type="submit" id='new-submit'>Create!</button>
+        <div class='confirm-cancel-buttons'>
+         <button type="button" id='cancel'>Cancel</button>
+         <button type="submit" id='new-submit' class='edit-confirm'>Confirm</button>
+        </div>
     </form>`;
 };
 
+const generateEditingPage = function(item) {
+  return `  
+    <h2 class='edit-header'>Edit Bookmark</h2>
+    <h3 class='edit-current-title'>${item.title}</h3>
+    <form class='edit-form'>
+        <label for='new-name' class='left'>Name This Bookmark</label>
+        <input type='text' name='name-text' id='new-name' class='bottom-margin' value='${item.title}' required>
+        <label for='new-url' class='left'>Insert URL</label>
+        <input type='url' name='url' id='new-url' class='bottom-margin' value='${item.url}' required>
+        <label for='new-description' class='left'>Insert Description</label>
+        <textarea name='description' id='new-desc' class='bottom-margin' required>${item.desc}</textarea>
+        <label for='new-rating'>Rate This Bookmark:</label>
+        <div class='adding-rating'>
+        ` + generateStarRating(item.rating) + `
+        </div>
+        <div class='confirm-cancel-buttons'>
+         <button type="button" id='cancel'>Cancel</button>
+         <button type="submit" id='new-submit' class='edit-confirm'>Confirm</button>
+        </div>
+    </form>`;
+};
+
+const generateError = function(message) {
+  return `
+    <section class="error-content">
+      <button id="close-button">X</button>
+      <p>${message}</p>
+    </section>
+  `;
+};
+
+
+/**
+ ** EVENT HANDLERS
+ */
 const handleAddItem = function() { //!!??
   $('main').on('click', '#add-item', () => {
     store.addingItem = true;
@@ -112,6 +171,8 @@ const handleAddItemSubmit = function() { //!! POSTS but doesn't render to list a
     api.createItem(newName, newUrl, newDesc, newRating)
       .then(() => {
         store.addingItem = false;
+        $('section').removeClass('new-container');
+        $('.button-box').toggleClass('hidden');
         render();
       })
       .catch(error => {
@@ -139,41 +200,43 @@ const handleSelectFilter = function() {
 const handleExpandDescription = function() {
   $('.container').on('click', '.title-bar', (e) => {
     $(e.currentTarget).next('.expanded').toggleClass('hidden');
+    $(e.currentTarget).find('.item-title').toggleClass('overflow');
   });
 };
 
-const handleEditItemClicked = function() { //!! Add to Edit Page function to render, get ID of element selected to edit, pass in parameters to template of edit page
-  $('.container').on('click', '.edit-item', () => {
-    console.log('click!!');
+const handleEditItemClicked = function() {
+  $('.container').on('click', '.edit-item', (e) => {
+    const id = getItemIdFromElement(e.currentTarget);
+    const item = store.items.find(x => x.id === id);
+    store.editingItem = id;
+    render(item);
   });
 };
 
-const getItemIdFromElement = function(item) {
-  return $(item)
-    .closest('.bookmark')
-    .data('item-id');
-};
-
-const generateError = function(message) {
-  return `
-    <section class="error-content">
-      <button id="close-button">X</button>
-      <p>${message}</p>
-    </section>
-  `;
-};
-
-const renderError = function() {
-  if(store.error) {
-    $('.error-box').html(generateError(store.error));
-  } else {
-    $('.error-box').addClass('hidden');
-  }
+const handleEditConfirmed = function() { //!! POSTS but doesn't render to list after submission
+  $('main').on('submit', '.edit-form', (e) => {
+    e.preventDefault();
+    const newName = $('#new-name').val();
+    const newUrl = $('#new-url').val();
+    const newDesc = $('#new-desc').val();
+    const newRating = store.tempRating;
+    api.updateItem(store.editingItem, newName, newUrl, newDesc, newRating)
+      .then(() => {
+        store.editingItem = false;
+        $('section').removeClass('new-container');
+        $('.button-box').toggleClass('hidden');
+        render();
+      })
+      .catch(error => {
+        store.setError(error.message);
+        renderError();
+      });
+  });
 };
 
 const handleDeleteItemClicked = function() {
   $('main').on('click', '.fa-trash-o', (e) => {
-    const id = getItemIdFromElement(e.currentTarget);
+    const id = getItemIdFromElement(e.currentTarget); //Applies it to the nearest .container
     api.deleteItem(id)
       .then(() => {
         store.deleteItem(id);
@@ -193,30 +256,81 @@ const handleErrorClose = function() {
   });
 };
 
+const handleCancelClicked = function() {
+  $('main').on('click', '#cancel', () => {
+
+  });
+};
+
+/**
+ * *MISC FUNCTIONS
+ */
+const getItemIdFromElement = function(item) {
+  return $(item)
+    .closest('.bookmark')
+    .data('item-id');
+};
+
+const filterCheck = function(arr) {
+  if (arr.length === 0) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+/**
+ * *RENDER FUNCTIONS
+ */
+const renderError = function() {
+  if(store.error) {
+    $('.error-box').html(generateError(store.error));
+  } else {
+    $('.error-box').addClass('hidden');
+  }
+};
+
 const renderAdding = function () {
   let addingPage = generateAddingPage();
   $('.container').html(addingPage);
 };
 
-const renderList = function() {
-  let items = [...store.items];
-  
-  if (store.filter >= 1 && store.filter <= 5) {
-    items = items.filter(item => item.rating >= store.filter);
-  }
-  const bookmarksItemsString = generateBookmarksItemsString(items);
-  $('.container').html(bookmarksItemsString);
+const renderEditing = function(item) {
+  let editingPage = generateEditingPage(item);
+  $('.container').html(editingPage);
 };
 
-const render = function() {
+const renderList = function() {
+  let items = [...store.items];
+  if (store.filter >= 1 && store.filter <= 5) {
+    let checkThis = items.filter(item => item.rating >= store.filter);
+    let badFilter = (filterCheck(checkThis));
+    if (badFilter === true && store.items.length !== 0) {
+      $('.container').html(generateBadFilter());
+    } else {
+      $('.container').html(generateBookmarksItemsString(items));
+    }
+  }
+  else if (store.items.length === 0) {
+    $('.container').html(generateEmptyList());
+  } else {
+    $('.container').html(generateBookmarksItemsString(items));
+  }
+};
+
+const render = function(item) {
+  $('.container').empty();
   renderError();
-  if (store.addingItem === false) {
-    renderList();
+  if (store.editingItem !== false) {
+    renderEditing(item);
+    $('.button-box').toggleClass('hidden-buttons');
+    $('section').addClass('new-container');
   } else if (store.addingItem === true) {
     renderAdding();
-    $('.button-box').toggleClass('hidden');
-    $('section').removeClass('container');
+    $('.button-box').toggleClass('hidden-buttons');
     $('section').addClass('new-container');
+  } else {
+    renderList();
   }
 };
 
@@ -229,6 +343,8 @@ const bindEventListeners = function () {
   handleChangeRating();
   handleAddItemSubmit();
   handleEditItemClicked();
+  handleEditConfirmed();
+  handleCancelClicked();
 };
 
 export default {

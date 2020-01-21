@@ -2,6 +2,7 @@ const items = [];
 let error = null;
 let filter = null;
 let addingItem = false; //!! SHOULD BE FALSE BY DEFAULT
+let editingItem = false; //!! SHOULD BE FALSE BY DEFAULT
 let tempRating = 0;
 
 const findById = function (id) {
@@ -31,6 +32,7 @@ export default {
   filter,
   tempRating,
   addingItem,
+  editingItem,
   setError,
   findById,
   addItem,

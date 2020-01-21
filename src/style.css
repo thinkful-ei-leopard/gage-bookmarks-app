@@ -36,10 +36,11 @@ h1 {
     width: 10rem;
     font-size: 2.2rem;
     color: rgb(225, 236, 207);
-    background-color: #2E151B;
+    background-color: rgb(65, 29, 38);
     border: 1px solid #DA7B93;
     border-radius: .5rem;
     box-shadow: .2rem .2rem .5rem black;
+    cursor: pointer;
 }
 
 .bookmark {
@@ -53,11 +54,33 @@ h1 {
     background-color: #376E6F;
 }
 
-.new-container {
+main > .new-container {
+    max-width: 286px;
+    margin: auto;
     border: .2rem solid black;
     border-radius: .5rem;
     background-color: #376E6F;
     padding: 0rem 2.5rem 1.5rem 2.5rem;
+}
+
+.new-container > h2 {
+    margin: 10px 0px 10px 0px;
+}
+
+.new-container > h3 {
+    margin: 10px 0px 10px 0px;
+    font-size: 2rem;
+    color: rgb(17, 17, 17);
+}
+
+.overflow {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.item-title {
+    max-width: 63%;
 }
 
 .top-cap {
@@ -85,10 +108,11 @@ h1 {
     cursor: pointer;
 }
 
-.fa-trash-o {
-    font-size: 3rem;
-    margin-left: 1rem;
-    color: rgb(206, 5, 5);
+.title-bar_no-list {
+    font-size: 2rem;
+    padding: .9rem .5rem .9rem .5rem;
+    width: 100%;
+    cursor: default;
 }
 
 h2 {
@@ -100,19 +124,19 @@ form > * {
     font-size: 2rem;
 }
 
-#new-submit {
-    margin: auto;
-    margin-top: 1.6rem;
+.confirm-cancel-buttons > * {
+    margin-top: 1.4rem;
     width: 10rem;
     height: 4rem;
 }
 
 .fa-star {
     font-size: 1.6rem;
+    color: rgb(56, 56, 56);
 }
 
 .checked {
-    color: goldenrod;
+    color: rgb(104, 16, 36);
   }
 
 .expanded {
@@ -135,11 +159,26 @@ form > * {
 }
 
 .expanded-buttons > * {
+    text-decoration: none;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 2.3rem;
+    color: rgb(225, 236, 207);
+    background-color: rgb(65, 29, 38);
+    border: 1px solid #DA7B93;
+    border-radius: .5rem;
+    box-shadow: .2rem .2rem .5rem black;
     cursor: pointer;
 }
 
+.fa-trash-o {
+    padding: .3rem .5rem .4rem .5rem;
+    margin-left: 1rem;
+}
+
 .edit-item {
-    display: inline-block;
+    line-height: 2.5rem;
+    padding-bottom: .2rem;
     height: 3rem;
 }
 
@@ -147,11 +186,10 @@ form > * {
     cursor: pointer;
 }
 
-.visit-site-button > * {
-    display: inline-block;
+.visit-site-button {
     height: 3.5rem;
-    width: 10rem;
-    font-size: 2rem;
+    width: 11rem;
+    font-size: 2.5rem;
     cursor: pointer;
 }
 
@@ -186,6 +224,14 @@ form > * {
   right: .2rem;
 }
 
+.hidden-buttons {
+    display: none;
+}
+
 .hidden {
     display: none;
+}
+
+@media screen and (min-width: 620px) {
+
 }

@@ -15,13 +15,14 @@ const createItem = function(title, url, desc, rating) {
   });
 }
 
-const updateItem = function(id, updateData) { //?? MAY NEED ADJUSTING
+const updateItem = function(id, title, url, desc, rating) { //?? MAY NEED ADJUSTING
+  let updatedItem = JSON.stringify({ title, url, desc, rating});
   return apiFetch(`${BASE_URL}/bookmarks/${id}`, {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify(updateData)
+    body: updatedItem
   });
 }
 
