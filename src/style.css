@@ -148,11 +148,12 @@ form > * {
 
 .expanded > p {
     margin-top: .5rem;
-    margin-bottom: 1rem;
+    margin-bottom: 0rem;
     color: rgb(225, 236, 207);
 }
 
 .expanded-buttons {
+    margin: .5rem 0rem .5rem 0rem;
     display: flex;
     justify-content: space-evenly;
     align-items: center;
@@ -232,6 +233,37 @@ form > * {
     display: none;
 }
 
-@media screen and (min-width: 620px) {
+@media screen and (min-width: 400px) {
+    .bookmark > .hidden {
+        display: block;
+    }
+}
 
+@media screen and (min-width: 620px) {
+    .container {
+        display: flex;
+    }
+    
+    .bookmark {
+        width: 50%;
+        height: 30rem;
+        border: 1px solid black;
+    }
+
+    .expanded > p {
+    overflow: hidden;
+    line-height: 2.2rem;
+    max-height: 15.5rem; 
+    text-align: justify;  
+  }
+
+.expand-further {
+    background-color: rgb(65, 29, 38);
+}
+
+  .expand-further > p {
+      margin: 0;
+      padding: 1rem 0rem 1rem 0rem;
+      text-align: center;
+  }
 }

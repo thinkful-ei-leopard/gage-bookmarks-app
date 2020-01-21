@@ -24,6 +24,9 @@ const generateItemElement = function (item) {
             <p>
               ${item.desc}
             </p>
+            <div class='expand-further'>
+              <p class='expand-further-text'>Click Here to Expand Further</p>
+            </div>
             <div class='expanded-buttons'>
               <button type='button' class='edit-item'>Edit</button>
               <a href="${item.url}" class="visit-site-button action" role='button' target="blank">Visit Site</a>
