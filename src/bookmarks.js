@@ -15,17 +15,17 @@ const generateItemElement = function (item) {
   return `
     <div class='bookmark' data-item-id='${item.id}'>
         <div class='title-bar'>
-            <span class='item-title overflow'>${item.title}</span>
+            <span class='item-title'>${item.title}</span>
             <div>` 
             + generateStarRating(rating) + 
             `</div>
         </div>
         <div class='expanded hidden'>
-            <p>
+            <p class='overflow'>
               ${item.desc}
             </p>
             <div class='expand-further'>
-              <p class='expand-further-text'>Click Here to Expand Further</p>
+              <p>Click Here to Expand</p>
             </div>
             <div class='expanded-buttons'>
               <button type='button' class='edit-item'>Edit</button>
@@ -85,19 +85,15 @@ const generateStarRating = function(rating) {
 
 const generateBadFilter = function() {
   return `
-    <div class='bookmark'>
-        <div class='title-bar_no-list'>
-            <span>You have no bookmarks to show in this current filter. Please select an alternate one.</span>
-        </div>
+    <div class='title-bar_no-list'>
+      <span>You have no bookmarks to show in this current filter. Please select an alternate one.</span>
     </div>`;
 };
 
 const generateEmptyList = function() {
   return `
-    <div class='bookmark'>
-        <div class='title-bar_no-list'>
-            <span>You have no bookmarks! Add a new one using the button above.</span>
-        </div>
+    <div class='title-bar_no-list'>
+      <span>You have no bookmarks! Add a new one using the button above.</span>
     </div>`;
 };
 
@@ -107,7 +103,7 @@ const generateAddingPage = function() {
     <form class='add-form'>
         <label for='new-name' class='left'>Name This Bookmark</label>
         <input type='text' name='name-text' id='new-name' class='bottom-margin' placeholder='New Bookmark' required>
-        <label for='new-url' class='left'>Insert URL</label>
+        <label for='new-url' class='left'>Insert URL (with https://)</label>
         <input type='url' name='url' id='new-url' class='bottom-margin' placeholder='https://example.com' required>
         <label for='new-description' class='left'>Insert Description</label>
         <textarea name='description' id='new-desc' class='bottom-margin' placeholder='Description text...' required></textarea>
@@ -129,7 +125,7 @@ const generateEditingPage = function(item) {
     <form class='edit-form'>
         <label for='new-name' class='left'>Name This Bookmark</label>
         <input type='text' name='name-text' id='new-name' class='bottom-margin' value='${item.title}' required>
-        <label for='new-url' class='left'>Insert URL</label>
+        <label for='new-url' class='left'>Insert URL (with https://)</label>
         <input type='url' name='url' id='new-url' class='bottom-margin' value='${item.url}' required>
         <label for='new-description' class='left'>Insert Description</label>
         <textarea name='description' id='new-desc' class='bottom-margin' required>${item.desc}</textarea>
@@ -174,7 +170,7 @@ const handleAddItemSubmit = function() { //!! POSTS but doesn't render to list a
     api.createItem(newName, newUrl, newDesc, newRating)
       .then(() => {
         store.addingItem = false;
-        $('section').removeClass('new-container');
+        $('section').toggleClass('new-container container');
         $('.button-box').toggleClass('hidden');
         render();
       })
@@ -207,6 +203,12 @@ const handleExpandDescription = function() {
   });
 };
 
+const handleExpandFurther = function() {
+  $('.container').on('click', '.expand-further', (e) => {
+    $(e.currentTarget).siblings('p').toggleClass('overflow');
+  });
+};
+
 const handleEditItemClicked = function() {
   $('.container').on('click', '.edit-item', (e) => {
     const id = getItemIdFromElement(e.currentTarget);
@@ -226,7 +228,7 @@ const handleEditConfirmed = function() { //!! POSTS but doesn't render to list a
     api.updateItem(store.editingItem, newName, newUrl, newDesc, newRating)
       .then(() => {
         store.editingItem = false;
-        $('section').removeClass('new-container');
+        $('section').toggleClass('new-container container');
         $('.button-box').toggleClass('hidden');
         render();
       })
@@ -261,7 +263,9 @@ const handleErrorClose = function() {
 
 const handleCancelClicked = function() {
   $('main').on('click', '#cancel', () => {
-
+    store.addingItem = false;
+    store.editingItem = false;
+    render();
   });
 };
 
@@ -304,14 +308,14 @@ const renderEditing = function(item) {
 };
 
 const renderList = function() {
-  let items = [...store.items];
+  let items = [...store.items].reverse();
   if (store.filter >= 1 && store.filter <= 5) {
     let checkThis = items.filter(item => item.rating >= store.filter);
     let badFilter = (filterCheck(checkThis));
     if (badFilter === true && store.items.length !== 0) {
       $('.container').html(generateBadFilter());
     } else {
-      $('.container').html(generateBookmarksItemsString(items));
+      $('.container').html(generateBookmarksItemsString(checkThis));
     }
   }
   else if (store.items.length === 0) {
@@ -327,11 +331,11 @@ const render = function(item) {
   if (store.editingItem !== false) {
     renderEditing(item);
     $('.button-box').toggleClass('hidden-buttons');
-    $('section').addClass('new-container');
+    $('section').toggleClass('container new-container');
   } else if (store.addingItem === true) {
     renderAdding();
     $('.button-box').toggleClass('hidden-buttons');
-    $('section').addClass('new-container');
+    $('section').toggleClass('container new-container');
   } else {
     renderList();
   }
@@ -348,6 +352,7 @@ const bindEventListeners = function () {
   handleEditItemClicked();
   handleEditConfirmed();
   handleCancelClicked();
+  handleExpandFurther();
 };
 
 export default {

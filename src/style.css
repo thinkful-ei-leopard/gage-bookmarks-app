@@ -48,6 +48,14 @@ h1 {
 }
 
 .container {
+    margin-bottom: 1.5rem;
+    padding: 0rem;
+    border: .2rem solid black;
+    border-radius: .5rem;
+    background-color: #376E6F;
+}
+
+.new-container {
     padding: 0rem;
     border: .2rem solid black;
     border-radius: .5rem;
@@ -73,22 +81,12 @@ main > .new-container {
     color: rgb(17, 17, 17);
 }
 
-.overflow {
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-}
-
 .item-title {
     max-width: 63%;
 }
 
-.top-cap {
-    border-radius: .5rem .5rem 0rem 0rem;
-}
-
-.bottom-cap {
-    border-radius: 0rem 0rem .5rem .5rem;
+.confirm-cancel-buttons > *{
+    cursor: pointer;
 }
 
 .bottom-margin {
@@ -109,6 +107,7 @@ main > .new-container {
 }
 
 .title-bar_no-list {
+    border: .1rem solid #1C3334;
     font-size: 2rem;
     padding: .9rem .5rem .9rem .5rem;
     width: 100%;
@@ -225,45 +224,61 @@ form > * {
   right: .2rem;
 }
 
-.hidden-buttons {
-    display: none;
-}
-
-.hidden {
+.hidden-buttons, .hidden, .expand-further {
     display: none;
 }
 
 @media screen and (min-width: 400px) {
-    .bookmark > .hidden {
+    .bookmark > .hidden, .expand-further {
         display: block;
     }
+    
+    .bookmark {
+        border: 1px solid black;
+    }
+
+    .overflow {
+        max-height: 10rem;
+    }
+
+    .expanded > p {
+        overflow: hidden;
+        line-height: 2.2rem;
+        text-align: justify;  
+   }
+
+   .expand-further {
+      background-color: rgb(65, 29, 38);
+      cursor: pointer;
+      border-radius: .5rem;
+   }
+
+  .expand-further > p {
+      margin: .5rem 0rem .5rem 0rem;
+      padding: .8rem 0rem .8rem 0rem;
+      text-align: center;
+  }
 }
 
 @media screen and (min-width: 620px) {
     .container {
         display: flex;
+        flex-wrap: wrap;
     }
-    
+
     .bookmark {
         width: 50%;
-        height: 30rem;
-        border: 1px solid black;
+        min-height: 30rem;
     }
 
-    .expanded > p {
-    overflow: hidden;
-    line-height: 2.2rem;
-    max-height: 15.5rem; 
-    text-align: justify;  
-  }
-
-.expand-further {
-    background-color: rgb(65, 29, 38);
+    .overflow {
+        max-height: none;
+        height: 15.8rem;
+    }
 }
 
-  .expand-further > p {
-      margin: 0;
-      padding: 1rem 0rem 1rem 0rem;
-      text-align: center;
-  }
+@media screen and (min-width: 800px) {
+    section > .bookmark {
+        width: 33.33%;
+    }
 }
