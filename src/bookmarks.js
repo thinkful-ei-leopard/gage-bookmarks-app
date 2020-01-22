@@ -98,9 +98,10 @@ const generateEmptyList = function() {
 };
 
 const generateAddingPage = function() {
-  return `  
-    <h2>Add Bookmark</h2>
+  return `
     <form class='add-form'>
+      <fieldset name='add-bookmark'>
+      <legend><h2 class='add-header'>Add Bookmark</h2></legend>
         <label for='new-name' class='left'>Name This Bookmark</label>
         <input type='text' name='name-text' id='new-name' class='bottom-margin' placeholder='New Bookmark' required>
         <label for='new-url' class='left'>Insert URL (with https://)</label>
@@ -115,6 +116,7 @@ const generateAddingPage = function() {
          <button type="button" id='cancel'>Cancel</button>
          <button type="submit" id='new-submit' class='edit-confirm'>Confirm</button>
         </div>
+      </fieldset>
     </form>`;
 };
 
@@ -155,14 +157,14 @@ const generateError = function(message) {
 /**
  ** EVENT HANDLERS
  */
-const handleAddItem = function() { //!!??
+const handleAddItem = function() {
   $('main').on('click', '#add-item', () => {
     store.addingItem = true;
     render();
   });
 };
 
-const handleAddItemSubmit = function() { //!! POSTS but doesn't render to list after submission
+const handleAddItemSubmit = function() {
   $('main').on('submit', '.add-form', (e) => {
     e.preventDefault();
     const newName = $('#new-name').val();
@@ -173,8 +175,13 @@ const handleAddItemSubmit = function() { //!! POSTS but doesn't render to list a
       .then(() => {
         store.addingItem = false;
         $('section').toggleClass('new-container container');
-        $('.button-box').toggleClass('hidden');
-        render();
+        $('.button-box').toggleClass('hidden-buttons');
+        api.getItems()
+          .then((items) => {
+            store.items = [];
+            items.forEach((item) => store.addItem(item));
+            render();
+          });
       })
       .catch(error => {
         store.setError(error.message);
@@ -220,7 +227,7 @@ const handleEditItemClicked = function() {
   });
 };
 
-const handleEditConfirmed = function() { //!! POSTS but doesn't render to list after submission
+const handleEditConfirmed = function() {
   $('main').on('submit', '.edit-form', (e) => {
     e.preventDefault();
     const newName = $('#new-name').val();
@@ -231,8 +238,13 @@ const handleEditConfirmed = function() { //!! POSTS but doesn't render to list a
       .then(() => {
         store.editingItem = false;
         $('section').toggleClass('new-container container');
-        $('.button-box').toggleClass('hidden');
-        render();
+        $('.button-box').toggleClass('hidden-buttons');
+        api.getItems()
+          .then((items) => {
+            store.items = [];
+            items.forEach((item) => store.addItem(item));
+            render();
+          });
       })
       .catch(error => {
         store.setError(error.message);
@@ -267,6 +279,8 @@ const handleCancelClicked = function() {
   $('main').on('click', '#cancel', () => {
     store.addingItem = false;
     store.editingItem = false;
+    $('section').toggleClass('new-container container');
+    $('.button-box').toggleClass('hidden-buttons');
     render();
   });
 };
@@ -288,11 +302,18 @@ const filterCheck = function(arr) {
   }
 };
 
+const sortByRating = function(arr) {
+  return arr.sort(function(a, b) {
+    return b.rating - a.rating;
+  });
+};
+
 /**
  * *RENDER FUNCTIONS
  */
 const renderError = function() {
   if(store.error) {
+    $('.error-box').removeClass('hidden');
     $('.error-box').html(generateError(store.error));
   } else {
     $('.error-box').addClass('hidden');
@@ -310,7 +331,7 @@ const renderEditing = function(item) {
 };
 
 const renderList = function() {
-  let items = [...store.items].reverse();
+  let items = sortByRating([...store.items]);
   if (store.filter >= 1 && store.filter <= 5) {
     let checkThis = items.filter(item => item.rating >= store.filter);
     let badFilter = (filterCheck(checkThis));
@@ -328,7 +349,7 @@ const renderList = function() {
 };
 
 const render = function(item) {
-  $('.container').empty();
+  $('section').empty();
   renderError();
   if (store.editingItem !== false) {
     renderEditing(item);

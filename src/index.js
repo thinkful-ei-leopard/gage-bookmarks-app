@@ -17,8 +17,6 @@ const main = function () {
       bookmarks.render();
       bookmarks.bindEventListeners();
     });
-  //bookmarks.render();
-  //bookmarks.bindEventListeners(); //??Why won't this work but the above does?
 };
 
 $(main);

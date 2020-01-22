@@ -2,7 +2,7 @@ const BASE_URL = 'https://thinkful-list-api.herokuapp.com/gage';
 
 const getItems = function() {
   return apiFetch(`${BASE_URL}/bookmarks`);
-}
+};
 
 const createItem = function(title, url, desc, rating) {
   let newItem = JSON.stringify({ title, url, desc, rating});
@@ -13,7 +13,7 @@ const createItem = function(title, url, desc, rating) {
     },
     body: newItem
   });
-}
+};
 
 const updateItem = function(id, title, url, desc, rating) { //?? MAY NEED ADJUSTING
   let updatedItem = JSON.stringify({ title, url, desc, rating});
@@ -24,13 +24,13 @@ const updateItem = function(id, title, url, desc, rating) { //?? MAY NEED ADJUST
     },
     body: updatedItem
   });
-}
+};
 
 const deleteItem = function(id) {
   return apiFetch(`${BASE_URL}/bookmarks/${id}`, {
     method: 'DELETE'
   });
-}
+};
 
 const apiFetch = function(...args) {
   let error;
@@ -50,7 +50,7 @@ const apiFetch = function(...args) {
   
       return data;
     });
-}
+};
   
 export default {
   getItems,
