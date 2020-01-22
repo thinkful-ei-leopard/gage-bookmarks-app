@@ -13,8 +13,8 @@
         <h1>My Bookmarks</h1>
         <div class='button-box'>
             <button type='button' id='add-item'>Add +</button>
-            <select id='filter-items'>
-                <option value="filter">Filter</option>
+            <select aria-label='filter' id='filter-items'>
+                <option value="nofilter">No Filter</option>
                 <option value="5">5 Stars</option>
                 <option value="4">4+ Stars</option>
                 <option value="3">3+ Stars</option>
@@ -23,7 +23,7 @@
             </select>
         </div>
         <div class="error-box"></div>
-        <section class='container'>
+        <section class='container' aria-live="polite">
         </section>
     </main>
 </body>

@@ -33,7 +33,7 @@ h1 {
 .button-box > * {
     display: inline-block;
     height: 4.5rem;
-    width: 10rem;
+    width: 11rem;
     font-size: 2.2rem;
     color: rgb(225, 236, 207);
     background-color: rgb(65, 29, 38);
@@ -68,21 +68,27 @@ main > .new-container {
     border: .2rem solid black;
     border-radius: .5rem;
     background-color: #376E6F;
-    padding: 0rem 2.5rem 1.5rem 2.5rem;
 }
 
-.new-container > h2 {
-    margin: 10px 0px 10px 0px;
+legend {
+    display: block;
 }
 
-.new-container > h3 {
-    margin: 10px 0px 10px 0px;
-    font-size: 2rem;
-    color: rgb(17, 17, 17);
+legend > h2 {
+    margin: 2rem 0rem 1rem 0rem;
 }
 
-.item-title {
-    max-width: 63%;
+fieldset {
+    border: 0;
+}
+
+fieldset > h3 {
+    margin: 0rem 0rem 1rem 0rem;
+    color: rgb(34, 34, 34);
+}
+
+.stars-container {
+    min-width: 10rem;
 }
 
 .confirm-cancel-buttons > *{
@@ -104,6 +110,12 @@ main > .new-container {
     display: flex;
     justify-content: space-between;
     cursor: pointer;
+}
+
+.title-overflow {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 }
 
 .title-bar_no-list {
@@ -229,6 +241,10 @@ form > * {
 }
 
 @media screen and (min-width: 400px) {
+    .title-bar {
+        cursor: default;
+    }
+
     .bookmark > .hidden, .expand-further {
         display: block;
     }

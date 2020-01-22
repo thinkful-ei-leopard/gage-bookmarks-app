@@ -15,8 +15,8 @@ const generateItemElement = function (item) {
   return `
     <div class='bookmark' data-item-id='${item.id}'>
         <div class='title-bar'>
-            <span class='item-title'>${item.title}</span>
-            <div>` 
+            <span class='item-title title-overflow'>${item.title}</span>
+            <div class='stars-container'>` 
             + generateStarRating(rating) + 
             `</div>
         </div>
@@ -105,7 +105,7 @@ const generateAddingPage = function() {
         <input type='text' name='name-text' id='new-name' class='bottom-margin' placeholder='New Bookmark' required>
         <label for='new-url' class='left'>Insert URL (with https://)</label>
         <input type='url' name='url' id='new-url' class='bottom-margin' placeholder='https://example.com' required>
-        <label for='new-description' class='left'>Insert Description</label>
+        <label for='new-desc' class='left'>Insert Description</label>
         <textarea name='description' id='new-desc' class='bottom-margin' placeholder='Description text...' required></textarea>
         <label for='new-rating'>Rate This Bookmark:</label>
         <div class='adding-rating'>
@@ -120,23 +120,25 @@ const generateAddingPage = function() {
 
 const generateEditingPage = function(item) {
   return `  
-    <h2 class='edit-header'>Edit Bookmark</h2>
-    <h3 class='edit-current-title'>${item.title}</h3>
     <form class='edit-form'>
+      <fieldset name='edit-bookmark'>
+        <legend><h2 class='edit-header'>Edit Bookmark</h2></legend>
+        <h3 class='edit-current-title'>${item.title}</h3>
         <label for='new-name' class='left'>Name This Bookmark</label>
         <input type='text' name='name-text' id='new-name' class='bottom-margin' value='${item.title}' required>
         <label for='new-url' class='left'>Insert URL (with https://)</label>
         <input type='url' name='url' id='new-url' class='bottom-margin' value='${item.url}' required>
-        <label for='new-description' class='left'>Insert Description</label>
+        <label for='new-desc' class='left'>Insert Description</label>
         <textarea name='description' id='new-desc' class='bottom-margin' required>${item.desc}</textarea>
         <label for='new-rating'>Rate This Bookmark:</label>
         <div class='adding-rating'>
         ` + generateStarRating(item.rating) + `
         </div>
         <div class='confirm-cancel-buttons'>
-         <button type="button" id='cancel'>Cancel</button>
-         <button type="submit" id='new-submit' class='edit-confirm'>Confirm</button>
+        <button type="button" id='cancel'>Cancel</button>
+        <button type="submit" id='new-submit' class='edit-confirm'>Confirm</button>
         </div>
+      </fieldset>
     </form>`;
 };
 
@@ -199,7 +201,7 @@ const handleSelectFilter = function() {
 const handleExpandDescription = function() {
   $('.container').on('click', '.title-bar', (e) => {
     $(e.currentTarget).next('.expanded').toggleClass('hidden');
-    $(e.currentTarget).find('.item-title').toggleClass('overflow');
+    $(e.currentTarget).find('.item-title').toggleClass('title-overflow');
   });
 };
 
